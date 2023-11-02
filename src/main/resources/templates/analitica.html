@@ -1,0 +1,92 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Analítica</title>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script type="text/javascript"
+            src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+<div align="center" style="width: 1000px;">
+    <h2>Analitica de datos sobre los empleados de la lista</h2>
+    <button class="btn btn-light" onclick="changeChartPie()">Pie</button>
+    <button class="btn btn-light" onclick="changeChartTable()">Table</button>
+    <div id="piechart" style="width: 900px; height: 500px;"></div>
+    <div id="tablechart" style="width: 900px; height: 500px;"></div>
+</div>
+<script th:inline="javascript">
+    var real_data = /*[[${chartData}]]*/'noValue';
+    var employeesCount_data = /*[[${pieCountData}]]*/'noValue';
+    var salaryProm_data = /*[[${salaryPromData}]]*/'noValue';
+    var salary_data = /*[[${salaryData}]]*/'noValue';
+    var employeesalary_data = /*[[${employeeSalaryData}]]*/'noValue';
+
+
+
+
+    $(document).ready(function() {
+        google.charts.load('current', {
+            packages : [ 'corechart', 'bar' ]
+        });
+
+        google.charts.setOnLoadCallback(drawPieChart);
+
+        google.charts.setOnLoadCallback(drawTableChart);
+    });
+
+    function changeChartPie(){
+        document.querySelector("#tablechart").style.display="none";
+        document.querySelector("#piechart").style.display="block";
+    }
+
+    function changeChartTable(){
+        document.querySelector("#tablechart").style.display="block";
+        document.querySelector("#piechart").style.display="none";
+    }
+
+    function drawTableChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Sex');
+        data.addColumn('number', 'People');
+        Object.keys(real_data).forEach(function(key) {
+            data.addRow([ key, real_data[key] ]);
+        });
+
+        var options = {
+            title : 'Persona por sexo en la base de datos',
+            hAxis : {
+                title : 'Sexo Biologico',
+            },
+            vAxis : {
+                title : 'Numero de empleados'
+            },
+            colors: ['purple']
+        };
+        var chart = new google.visualization.ColumnChart(document
+                .getElementById('tablechart'));
+        chart.draw(data, options);
+    }
+
+    function drawPieChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Sex');
+        data.addColumn('number', 'People');
+        Object.keys(real_data).forEach(function(key) {
+            data.addRow([ key, real_data[key] ]);
+        });
+        var options = {
+            title : 'Persona por sexo en la base de datos'
+        };
+        var chart = new google.visualization.PieChart(document
+                .getElementById('piechart'));
+        chart.draw(data, options);
+    }
+
+
+</script>
+</body>
+</html>

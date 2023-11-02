@@ -36,7 +36,7 @@ public class ConfigurationService {
         return null;
     }
 
-    public void deleteConfiguration(String propiedad) {
+    public void deleteConfiguration(Long propiedad) {
         configurationRepository.deleteById(propiedad);
     }
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ConfigurationRepository extends JpaRepository<Configuration, String> {
+public interface ConfigurationRepository extends JpaRepository<Configuration, Long> {
     public List<Configuration> findByPropiedad(String propiedad);
 
 }
